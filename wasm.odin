@@ -1,5 +1,5 @@
 package main
-
+import "core:fmt"
 import "core:mem"
 import "vendor:wasm/js"
 
@@ -12,6 +12,7 @@ foreign env {
 }
 
 main :: proc() {
+	fmt.println("Hello from Odin")
 	draw_rect_filled(0, 0, get_canvas_width(), get_canvas_height(), 0xFFF)
 	draw_rect_filled(10, 10, 100, 50, 0xFF0000FF)
 	draw_rect_filled(20, 30, 100, 50, 0xFF9900FF)
