@@ -20,64 +20,12 @@
             border: 1px solid #000;
         }
     </style>
-    <script type="module">
-        // var wasm_memory = new WebAssembly.Memory({initial: 256});
-        let wasm_memory = null;
 
-        const get_string_from_ptr_len = (ptr, len) => {
-            const mem = new Uint8Array(wasm_memory.buffer);
-            const data = mem.slice(ptr).slice(0, len);
-            return new TextDecoder().decode(data);
-        };
-
-        const canvas = document.getElementById("my-canvas");
-        const ctx = canvas.getContext("2d");
-
-        const imports = {
-            env: {
-                mem_alloc: (size) => {
-                    return 0;
-                },
-                memmove: (dst_ptr, src_ptr, len) => {
-                    if (dst_ptr == 0 || str_ptr == 0) {
-                        return undefined;
-                    }
-
-                    const mem = new Uint8Array(wasm_memory.buffer);
-                    const dst = mem.slice(dst_ptr).slice(0, len);
-                    const src = mem.slice(src_ptr).slice(0, len);
-                    dst.fill(src);
-                    return dst;
-                },
-                print: (ptr, len) => {
-                    const s = get_string_from_ptr_len(ptr, len);
-                    console.log(s);
-                },
-                get_canvas_width: () => canvas.width,
-                get_canvas_height: () => canvas.height,
-                draw_rect_filled: (x, y, w, h, col) => {
-                    ctx.beginPath();
-                    ctx.rect(x, y, w, h);
-                    const r = (col >> 24) & 0xff;
-                    const g = (col >> 16) & 0xff;
-                    const b = (col >> 8) & 0xff;
-                    const a = (col >> 0) & 0xff;
-                    ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
-                    ctx.fill();
-                },
-            },
-        };
-
-        (async () => {
-            const data = await fetch("wasm.wasm");
-            const module = await WebAssembly.compile(await data.arrayBuffer());
-            window.wasm = await WebAssembly.instantiate(module, imports);
-            window.wasm.imports = imports;
-            wasm_memory = window.wasm.exports.memory;
-            window.wasm.exports._main();
-        })();
-    </script>
     <body>
+        <script type="text/javascript" src="runtime.js"></script>
+
         <canvas id="my-canvas"></canvas>
+
+        <script type="text/javascript" src="examples.js"></script>
     </body>
 </html>

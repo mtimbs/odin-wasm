@@ -1,32 +1,17 @@
-package wasm
+package main
 
 import "core:mem"
+import "vendor:wasm/js"
 
-foreign import env "env"
-
+foreign import "env"
 @(default_calling_convention = "contextless")
 foreign env {
-	print :: proc(str: string) ---
 	draw_rect_filled :: proc(x, y, w, h: int, col: u32) ---
 	get_canvas_width :: proc() -> int ---
 	get_canvas_height :: proc() -> int ---
 }
 
-
-@(export)
-add :: proc "contextless" (x: i32, y: i32) -> i32 {
-	return x + y
-}
-
-// No idea why main exports for ginerbill stream and not for me
-// Stream is several years old thoguh
-@(export)
-_main :: proc() {
-	main()
-}
-
 main :: proc() {
-	print("Debug log!")
 	draw_rect_filled(0, 0, get_canvas_width(), get_canvas_height(), 0xFFF)
 	draw_rect_filled(10, 10, 100, 50, 0xFF0000FF)
 	draw_rect_filled(20, 30, 100, 50, 0xFF9900FF)
