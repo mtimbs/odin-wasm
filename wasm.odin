@@ -6,15 +6,10 @@ foreign import env "env"
 
 @(default_calling_convention = "contextless")
 foreign env {
-	print_string_ptr_len :: proc(ptr: ^u8, len: int) ---
+	print :: proc(str: string) ---
 	draw_rect_filled :: proc(x, y, w, h: int, col: u32) ---
 	get_canvas_width :: proc() -> int ---
 	get_canvas_height :: proc() -> int ---
-}
-
-print :: proc(s: string) {
-	x := transmute(mem.Raw_String)s
-	print_string_ptr_len(x.data, x.len)
 }
 
 
