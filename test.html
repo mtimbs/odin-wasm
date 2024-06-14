@@ -35,7 +35,10 @@
 
         const imports = {
             env: {
-                remove: (dst_ptr, src_ptr, len) => {
+                mem_alloc: (size) => {
+                    return 0;
+                },
+                memmove: (dst_ptr, src_ptr, len) => {
                     if (dst_ptr == 0 || str_ptr == 0) {
                         return undefined;
                     }
